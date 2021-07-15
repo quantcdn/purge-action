@@ -25,11 +25,11 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Puirge
+      - name: Purge
         uses: ./
         id: purge
         with:
           customer: quant
           project: github-actions
           token: ${{ secrets.QUANT_TOKEN }}
-          url_patter: "/*"
+          url_pattern: "/*"
