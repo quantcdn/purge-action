@@ -15,6 +15,10 @@ inputs:
     description: "The path pattern to purge"
     required: true
     default: ""
+  endpoint:
+    description: 'Specify the QuantCDN API endpoint'
+    required: false
+    default: 'https://api.quantcdn.io'
 runs:
   using: "docker"
   image: "docker://quantcdn/cli:1.8.0"
@@ -25,6 +29,7 @@ runs:
     - -c ${{ inputs.customer }}
     - -t ${{ inputs.token }}
     - -p ${{ inputs.project }}
+    - --endpoint=${{ inputs.endpoint }}
 branding:
   icon: "upload-cloud"
   color: "blue"
