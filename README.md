@@ -52,4 +52,8 @@ token:
 dir:
   description: "The directory to deploy"
   required: true
+endpoint:
+  description: 'Specify the QuantCDN API endpoint'
+  required: false
+  default: 'https://api.quantcdn.io'
 ```
