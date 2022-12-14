@@ -20,7 +20,7 @@ jobs:
       # Build the artefact or restore a cached copy.
       # - name: Build the deploy artefact
       #   run: npm run build
-      - uses: quantcdn/purge-action@v1
+      - uses: quantcdn/purge-action@v2
         with:
           customer: <quant-customer-id>
           project: <quant-project-id>
