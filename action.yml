@@ -21,7 +21,7 @@ inputs:
     default: 'https://api.quantcdn.io'
 runs:
   using: "docker"
-  image: "docker://quantcdn/cli:2.0.0"
+  image: "docker://quantcdn/cli:2.1.0"
   entrypoint: quant
   args:
     - purge
