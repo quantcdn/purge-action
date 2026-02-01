@@ -18,7 +18,7 @@ inputs:
   endpoint:
     description: 'Specify the QuantCDN API endpoint'
     required: false
-    default: 'https://api.quantcdn.io'
+    default: 'https://api.quantcdn.io/v1'
 runs:
   using: "docker"
   image: "docker://quantcdn/cli:6.0.0"
