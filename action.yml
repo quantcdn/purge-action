@@ -1,5 +1,5 @@
-name: "Purge urls from QuantCDN"
-description: "An action to Purge urls from QuantCDN"
+name: "Purge content from QuantCDN"
+description: "Purge content from QuantCDN by URL pattern or cache keys"
 author: "QuantCDN"
 inputs:
   customer:
@@ -12,24 +12,49 @@ inputs:
     description: "Your API token"
     required: true
   url_pattern:
-    description: "The path pattern to purge"
-    required: true
-    default: ""
-  endpoint:
-    description: 'Specify the QuantCDN API endpoint'
+    description: "The URL path pattern to purge (mutually exclusive with cache_keys)"
     required: false
-    default: 'https://api.quantcdn.io/v1'
+    default: ""
+  cache_keys:
+    description: "Space-separated cache keys to purge (mutually exclusive with url_pattern)"
+    required: false
+    default: ""
+  soft_purge:
+    description: "Mark content as stale rather than immediately deleting from edge caches"
+    required: false
+    default: "false"
+  endpoint:
+    description: "QuantCDN API endpoint"
+    required: false
+    default: "https://api.quantcdn.io/v1"
 runs:
   using: "docker"
-  image: "docker://quantcdn/cli:6.0.0"
-  entrypoint: quant
+  image: "docker://quantcdn/cli:6.2.0"
+  entrypoint: /bin/sh
   args:
-    - purge
-    - ${{ inputs.url_pattern }}
-    - -c ${{ inputs.customer }}
-    - -t ${{ inputs.token }}
-    - -p ${{ inputs.project }}
-    - --endpoint=${{ inputs.endpoint }}
+    - -c
+    - |
+      set -e
+
+      if [ -n "$INPUT_CACHE_KEYS" ] && [ -n "$INPUT_URL_PATTERN" ]; then
+        echo "Error: cache_keys and url_pattern are mutually exclusive — pick one per step." >&2
+        exit 1
+      fi
+      if [ -z "$INPUT_CACHE_KEYS" ] && [ -z "$INPUT_URL_PATTERN" ]; then
+        echo "Error: provide either url_pattern or cache_keys." >&2
+        exit 1
+      fi
+
+      set -- -c "$INPUT_CUSTOMER" -t "$INPUT_TOKEN" -p "$INPUT_PROJECT" --endpoint="$INPUT_ENDPOINT"
+      if [ "$INPUT_SOFT_PURGE" = "true" ]; then
+        set -- "$@" --soft-purge
+      fi
+
+      if [ -n "$INPUT_CACHE_KEYS" ]; then
+        exec quant purge --cache-keys "$INPUT_CACHE_KEYS" "$@"
+      else
+        exec quant purge "$INPUT_URL_PATTERN" "$@"
+      fi
 branding:
   icon: "upload-cloud"
   color: "blue"
