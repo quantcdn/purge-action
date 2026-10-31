@@ -127,3 +127,10 @@ Set `soft_purge: true` to mark content as stale rather than evicting it immediat
 - [Content API: Purge](https://docs.quantcdn.io/content-api/operations/purge)
 - [Cache-Keys header](https://docs.quantcdn.io/api/get-started-content/)
 - [GitHub Actions and secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
+
+## Runtime security
+
+The action pins the maintained Quant CLI 7.2.0 multiarchitecture image by digest.
+It includes Node 22.23.4, with the CVE-2026-111497 Brotli decoder fix.
+Update the action reference to receive this image; historical pinned action
+SHAs and container digests retain their original contents.

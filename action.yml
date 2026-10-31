@@ -29,7 +29,7 @@ inputs:
     default: "https://api.quantcdn.io/v1"
 runs:
   using: "docker"
-  image: "docker://quantcdn/cli:7.0.1"
+  image: "docker://quantcdn/cli:7.2.0@sha256:efc4cacf7f347cdd466623f73c9bda8845fe2b6777c94124cee2c1afa497e682"
   entrypoint: /bin/sh
   args:
     - -c
